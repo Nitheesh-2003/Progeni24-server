@@ -25,16 +25,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 5,
     },
-    phone: {
-      type: String,
-      validate: {
-        validator: function(value) {
-          const telephoneRegex = /^\+?\d{1,4}?[-. ]?\(?[0-9]*\)?[-. ]?[0-9]+[-. ]?[0-9]+$/;
-          return telephoneRegex.test(value);
-        },
-        message: "Invalid telephone number format. Please provide a valid telephone number."
-      }
-    },
     techevents: {
       type: [String], 
       default: [] 
@@ -42,11 +32,6 @@ const UserSchema = new mongoose.Schema(
     nontechevents: {
       type: [String], 
       default: [] 
-    },
-    registerId: {
-      type: String,
-      unique: true,
-      match: [/^[0-9a-fA-F]{7}$/, 'RegisterId must be 7 characters long and contain only hexadecimal characters']
     }
   },
   { timestamps: true }
