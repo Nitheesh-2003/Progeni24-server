@@ -1,7 +1,6 @@
 import UserModel from "../models/User.js";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
-import nodemailer from "nodemailer";
 
 /* READ */
 export const getUser = async (req, res) => {
@@ -24,7 +23,6 @@ export const getUser = async (req, res) => {
 
 export const updateUser=async (req,res)=>{
   try {
-    console.log("request accepted");
     const {id}=req.params;
     const {_id,password}=req.body;
     if(id===_id){
@@ -34,7 +32,6 @@ export const updateUser=async (req,res)=>{
       }
       const user=await UserModel.findByIdAndUpdate(id,req.body,{new : true})
       const token=jwt.sign({email : user.email,id : user.id},process.env.JWT_SECRET_KEY,{expiresIn : "1h"})
-      console.log(user);
       res.status(200).json({user,token});
     }
     else{
@@ -61,41 +58,6 @@ export const deleteUser=async(req,res)=>{
     res.status(404).json({ error: err.message });
   }
 }
-
-
-export const registerEvent = async (req, res) => {
-  const { email, hexId } = req.body;
-
-  let transporter = nodemailer.createTransport({
-    host: 'smtp.example.com',
-    port: 587,
-    secure: false, 
-    auth: {
-      user: 'your_email@example.com',
-      pass: 'your_password',
-    },
-  });
-
-  // Send email to backend
-  let backendInfo = await transporter.sendMail({
-    from: '"Your Name" <your_email@example.com>', // sender address
-    to: 'backend@example.com', // list of receivers
-    subject: 'New Event Registration', // Subject line
-    text: `A user with ID ${hexId} has registered for an event. Details: ${JSON.stringify(eventData)}`, // plain text body
-  });
-
-  // Send email to frontend
-  let frontendInfo = await transporter.sendMail({
-    from: '"Your Name" <your_email@example.com>', // sender address
-    to: email, // list of receivers
-    subject: 'Event Registration Confirmation', // Subject line
-    text: 'Thank you for registering for the event. Your registration ID is: ' + hexId, // plain text body
-  });
-
-  console.log("Emails sent: backend -", backendInfo.messageId, ", frontend -", frontendInfo.messageId);
-  res.status(200).json({ message: 'Event registration successful' });
-};
-
 
 export const getAllUsers = async (req,res)=>{
   try {
