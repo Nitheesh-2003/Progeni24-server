@@ -2,7 +2,7 @@ import express from "express";
 import {
   getUser,
   updateUser,
-  deleteUser,
+  deleteUser
 } from "../controllers/users.js";
 import { verifyToken } from "../middleware/auth.js";
 

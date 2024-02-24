@@ -25,29 +25,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
       min: 5,
     },
-    isAdmin : {
-      type : Boolean,
-      default : false
-    },
-    gender: {
-      type: String,
-      default: "Male",
-      validate: {
-        validator: function(value) {
-          const validGenders = ["Male", "male", "Female", "female","Others","others"];
-          return validGenders.includes(value);
-        },
-        message: "Invalid gender"
-      }
-    },
-    profilePicture: String,
-    coverPicture : String,
-    about: String,
-    livesIn: String,
-    worksAt: String,
-    age : Number,
-    relationship: String,
-    dob : Date,
     phone: {
       type: String,
       validate: {
@@ -58,8 +35,19 @@ const UserSchema = new mongoose.Schema(
         message: "Invalid telephone number format. Please provide a valid telephone number."
       }
     },
-    followers : [],
-    following : []
+    techevents: {
+      type: [String], 
+      default: [] 
+    },
+    nontechevents: {
+      type: [String], 
+      default: [] 
+    },
+    registerId: {
+      type: String,
+      unique: true,
+      match: [/^[0-9a-fA-F]{7}$/, 'RegisterId must be 7 characters long and contain only hexadecimal characters']
+    }
   },
   { timestamps: true }
 );

@@ -11,6 +11,7 @@ export const verifyToken = async (req, res, next) => {
     }
     next();
   } catch (err) {
+    console.log("JWT error");
     res.status(500).json({ error: err.message });
   }
 };
